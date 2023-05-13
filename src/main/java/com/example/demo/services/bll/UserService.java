@@ -44,7 +44,7 @@ public class UserService implements UserInterface {
         job.setUsers(users);
         var newJobData = jobRepository.save(job);
         var newUser =  newJobData.getUsers();
-        return newUser.get(0);
+        return newUser.isEmpty() ? null : newUser.get(0);
     }
 
     @Override
