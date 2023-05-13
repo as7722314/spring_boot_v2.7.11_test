@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.security.SecureRandom;
 
 @Getter
 @Setter
@@ -19,7 +21,7 @@ public class User implements Serializable {
 
     /** DB Schema */
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -35,13 +37,8 @@ public class User implements Serializable {
     @Column(nullable = false, length = 255, name = "password")
     private String password;
 
-//    @Column(nullable = false, name = "job_id")
-//    private Long jobId;
-
-    @JsonBackReference
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
-//    @JoinColumn(name="job_id", nullable = true, insertable = false, updatable = false)
-    private Job job;
+    @Column(nullable = false, name = "job_id", insertable = false, updatable = false)
+    private Long jobId;
 
     /** Get Function */
     public Long getId() {
@@ -64,8 +61,8 @@ public class User implements Serializable {
         return password;
     }
 
-    public Job getJob() {
-        return job;
+    public Long getJobId() {
+        return jobId;
     }
 
     /** Set Function */
@@ -83,10 +80,13 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password){
-        this.password = password;
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(10, new SecureRandom());
+        String hashPassword = bCryptPasswordEncoder.encode(password);
+        this.password = hashPassword;
     }
 
-    public void setJob(Job job) {
-        this.job = job;
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
     }
+
 }

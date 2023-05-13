@@ -1,13 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.dao.UserDto;
-import com.example.demo.models.Job;
+import com.example.demo.dao.UserRequestDto;
 import com.example.demo.models.User;
 import com.example.demo.services.bll.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,8 +17,7 @@ public class UserController {
 
     @GetMapping("/users")
     public List<User> getAllUsers(){
-        var a = userService.getAll();
-        return a;
+        return userService.getAll();
     }
 
     @GetMapping("/user/{id}")
@@ -29,7 +26,8 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public User addUser(@RequestBody User user){
+    public User addUser(@RequestBody UserRequestDto userDto){
+        var user = userDto.getUser();
         return userService.addUser(user);
     }
 

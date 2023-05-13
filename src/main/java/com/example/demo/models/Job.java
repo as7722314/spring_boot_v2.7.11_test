@@ -19,16 +19,15 @@ import java.util.List;
 public class Job implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @Column(nullable = false, length = 255, name = "job_title")
     private String jobTitle;
 
-    @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_id", referencedColumnName = "id", nullable = true, insertable = false, updatable = false)
+    @OneToMany(targetEntity = User.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "job_id", referencedColumnName = "id", nullable = false)
     private List<User> users;
 
     public Long getId() {
@@ -39,11 +38,19 @@ public class Job implements Serializable {
         return jobTitle;
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

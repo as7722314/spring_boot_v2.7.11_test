@@ -28,7 +28,8 @@ public class JobService implements JobInterface {
 
     @Override
     public Job addJob(Job job) {
-        return null;
+        var newJob = jobRepository.save(job);
+        return newJob;
     }
 
     @Override
