@@ -2,13 +2,7 @@ package com.example.demo.dao;
 
 import com.example.demo.models.Job;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class JobRequestDto {
 
     @JsonProperty("job")

@@ -27,8 +27,7 @@ public class UserController {
 
     @PostMapping("/user")
     public User addUser(@RequestBody UserRequestDto userDto){
-        var user = userDto.getUser();
-        return userService.addUser(user);
+        return userService.addUser(userDto);
     }
 
     @PutMapping("/user/{id}")
@@ -40,5 +39,10 @@ public class UserController {
     public List<User> deleteUser(@PathVariable Long id){
         userService.deleteUser(id);
         return userService.getAll();
+    }
+
+    @GetMapping("/users/all/{id}")
+    public List<User> test(@PathVariable Long id){
+        return userService.getUserByJobId(id);
     }
 }

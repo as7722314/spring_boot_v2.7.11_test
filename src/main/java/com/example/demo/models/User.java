@@ -1,24 +1,18 @@
 package com.example.demo.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.security.SecureRandom;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
+
+@Entity(name = "users")
 @Table(name = "users")
 public class User implements Serializable {
-
     /** DB Schema */
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -37,8 +31,14 @@ public class User implements Serializable {
     @Column(nullable = false, length = 255, name = "password")
     private String password;
 
-    @Column(nullable = false, name = "job_id", insertable = false, updatable = false)
-    private Long jobId;
+//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "job_id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "job_t_user",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "job_id"))
+    private Job job;
 
     /** Get Function */
     public Long getId() {
@@ -61,11 +61,11 @@ public class User implements Serializable {
         return password;
     }
 
-    public Long getJobId() {
-        return jobId;
-    }
-
     /** Set Function */
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public void setName(String name){
         this.name = name;
@@ -85,8 +85,15 @@ public class User implements Serializable {
         this.password = hashPassword;
     }
 
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
+    public void setJob(Job job) {
+        this.job = job;
     }
 
+    public Job getJob() {
+        var newJob = new Job();
+        newJob.setId(job.getId());
+        newJob.setJobTitle(job.getJobTitle());
+        newJob.setUsers(null);
+        return newJob;
+    }
 }

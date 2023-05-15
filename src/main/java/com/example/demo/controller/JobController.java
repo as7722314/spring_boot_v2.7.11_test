@@ -20,9 +20,16 @@ public class JobController {
         return jobService.getAll();
     }
 
+    @GetMapping("/job/{id}")
+    public Job getJobById(@PathVariable Long id){
+        return jobService.getJobById(id);
+    }
+
     @PostMapping("/job")
     public Job addJobAndUser(@RequestBody JobRequestDto jobRequestDto){
         return jobService.addJob(jobRequestDto.getJob());
     }
+
+
 
 }

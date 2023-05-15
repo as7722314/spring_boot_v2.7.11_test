@@ -1,23 +1,15 @@
 package com.example.demo.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
+
+@Entity(name = "jobs")
 @Table(name = "jobs")
 public class Job implements Serializable {
-
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
@@ -26,8 +18,14 @@ public class Job implements Serializable {
     @Column(nullable = false, length = 255, name = "job_title")
     private String jobTitle;
 
-    @OneToMany(targetEntity = User.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "job_id", referencedColumnName = "id", nullable = false)
+//    @JsonManagedReference
+//    @OneToMany(targetEntity = User.class, fetch = FetchType.EAGER, mappedBy = "job")
+//    @JoinColumn(name = "job_id", insertable = false, updatable = false)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinTable(name = "job_t_user",
+        joinColumns = @JoinColumn(name = "job_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users;
 
     public Long getId() {

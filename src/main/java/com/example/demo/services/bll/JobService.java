@@ -23,7 +23,8 @@ public class JobService implements JobInterface {
 
     @Override
     public Job getJobById(Long id) {
-        return null;
+        var res = jobRepository.findById(id).get();
+        return res;
     }
 
     @Override
