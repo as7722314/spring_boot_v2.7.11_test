@@ -31,13 +31,14 @@ public class User implements Serializable {
     @Column(nullable = false, length = 255, name = "password")
     private String password;
 
-//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "job_id")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "job_t_user",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "job_id"))
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "job_id")
+    /** 雙向綁定 */
+//    @JsonInclude(JsonInclude.Include.NON_NULL)
+//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinTable(name = "job_t_user",
+//        joinColumns = @JoinColumn(name = "user_id"),
+//        inverseJoinColumns = @JoinColumn(name = "job_id"))
     private Job job;
 
     /** Get Function */
@@ -90,10 +91,11 @@ public class User implements Serializable {
     }
 
     public Job getJob() {
-        var newJob = new Job();
-        newJob.setId(job.getId());
-        newJob.setJobTitle(job.getJobTitle());
-        newJob.setUsers(null);
-        return newJob;
+        /** 雙向綁定用的 */
+//        var newJob = new Job();
+//        newJob.setId(job.getId());
+//        newJob.setJobTitle(job.getJobTitle());
+//        newJob.setUsers(null);
+        return job;
     }
 }

@@ -18,15 +18,16 @@ public class Job implements Serializable {
     @Column(nullable = false, length = 255, name = "job_title")
     private String jobTitle;
 
+    /** 雙向綁定*/
 //    @JsonManagedReference
 //    @OneToMany(targetEntity = User.class, fetch = FetchType.EAGER, mappedBy = "job")
 //    @JoinColumn(name = "job_id", insertable = false, updatable = false)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JoinTable(name = "job_t_user",
-        joinColumns = @JoinColumn(name = "job_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> users;
+//    @JsonInclude(JsonInclude.Include.NON_NULL)
+//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+//    @JoinTable(name = "job_t_user",
+//        joinColumns = @JoinColumn(name = "job_id"),
+//        inverseJoinColumns = @JoinColumn(name = "user_id"))
+//    private List<User> users;
 
     public Long getId() {
         return id;
@@ -36,9 +37,9 @@ public class Job implements Serializable {
         return jobTitle;
     }
 
-    public List<User> getUsers() {
-        return users;
-    }
+//    public List<User> getUsers() {
+//        return users;
+//    }
 
     public void setId(Long id) {
         this.id = id;
@@ -48,7 +49,7 @@ public class Job implements Serializable {
         this.jobTitle = jobTitle;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
+//    public void setUsers(List<User> users) {
+//        this.users = users;
+//    }
 }

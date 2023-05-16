@@ -54,8 +54,14 @@ public class UserService implements UserInterface {
     public User updateUser(Long id, User user) {
         User dbUser = this.getUserById(id);
         if(dbUser != null){
-            dbUser.setName(user.getName());
-            dbUser.setEmail(user.getEmail());
+            if(user.getName() != "" && user.getName() != null)
+            {
+                dbUser.setName(user.getName());
+            }
+            if(user.getEmail() != "" && user.getEmail() != null)
+            {
+                dbUser.setEmail(user.getEmail());
+            }
             return userRepository.save(dbUser);
         }else{
             return null;
